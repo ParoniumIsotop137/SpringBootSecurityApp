@@ -21,8 +21,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter{
 	
-	private final JWTService jwtService = new JWTService();
-	private final UserDetailsService userDetailsService = null;
+	JWTService jwtService;
+	UserDetailsService userDetailsService;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
