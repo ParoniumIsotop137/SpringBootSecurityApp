@@ -2,6 +2,7 @@ package com.ferenc.securityapp.config;
 
 import java.io.IOException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,7 +22,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter{
 	
+	@Autowired
 	private JWTService jwtService;
+	@Autowired
 	private UserDetailsService userDetailsService;
 
 	@Override
