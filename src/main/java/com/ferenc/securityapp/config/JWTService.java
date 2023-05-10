@@ -18,7 +18,7 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JWTService {
 	
-	private final String KEY = "294A404E635266556A586E327235753878214125442A472D4B6150645367566B";
+	private static final String KEY = "294A404E635266556A586E327235753878214125442A472D4B6150645367566B";
 
 	public String extractUserEmail(String jwtToken) {
 		

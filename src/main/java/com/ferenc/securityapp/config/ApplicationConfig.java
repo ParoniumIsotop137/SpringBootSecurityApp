@@ -22,20 +22,14 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ApplicationConfig {
 	
-	UserRepository repository;
+	private UserRepository repo;
 	
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return new UserDetailsService() {
+		return username -> repo.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Nem található ilyen felhasználó!"));
 			
-			@Override
-			public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-				// TODO Auto-generated method stub
-				return repository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("A felhasználó nem található!"));
-			}
-		};
+		}
 		
-	}
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		

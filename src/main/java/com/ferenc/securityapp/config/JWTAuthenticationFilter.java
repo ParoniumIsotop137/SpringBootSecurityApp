@@ -21,16 +21,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class JWTAuthenticationFilter extends OncePerRequestFilter{
 	
-	JWTService jwtService;
-	UserDetailsService userDetailsService;
+	private JWTService jwtService;
+	private UserDetailsService userDetailsService;
 
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
 			throws ServletException, IOException {
-		final String authHeader = request.getHeader("Azonosítás");
+		final String authHeader = request.getHeader("Authorization");
 		final String jwtToken;
 		final String userEmail;
-		if(authHeader == null || authHeader.startsWith("Bearer ")) {
+		if(authHeader == null || !authHeader.startsWith("Bearer ")) {
 			filterChain.doFilter(request, response);
 			return;
 		}
@@ -43,6 +43,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter{
 			
 			if(jwtService.isTokenValid(jwtToken, details)) {
 				UsernamePasswordAuthenticationToken aToken = new UsernamePasswordAuthenticationToken(details, null, details.getAuthorities());
+				
 				aToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(aToken);
 			}
