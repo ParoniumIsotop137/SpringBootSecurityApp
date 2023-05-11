@@ -24,7 +24,8 @@ public class AuthenticationService {
 
 	public AuthenticationResponse register(RegisterRequest request) {
 		
-		
+		//rohadt lombok nem működik
+		User.builder().build();
 		   
 		return null;
 	}
