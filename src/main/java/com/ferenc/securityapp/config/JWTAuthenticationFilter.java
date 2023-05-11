@@ -30,6 +30,13 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
 			throws ServletException, IOException {
+
+		if (request.getServletPath().contains("/szekhaz/kezdolap")) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
+
 		final String authHeader = request.getHeader("Authorization");
 		final String jwtToken;
 		final String userEmail;
