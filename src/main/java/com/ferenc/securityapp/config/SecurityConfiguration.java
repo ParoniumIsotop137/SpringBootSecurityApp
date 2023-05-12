@@ -25,8 +25,8 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		
-		http.csrf().disable().authorizeHttpRequests().requestMatchers("/szekhaz/kezdolap/**").permitAll()
-		.anyRequest().authenticated()
+		http.csrf().disable().authorizeHttpRequests().requestMatchers("/szekhaz/regisztracio", "/szekhaz/azonositas").permitAll()
+		.requestMatchers("/partszekhaz").authenticated()
 		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 		.and().authenticationProvider(authenticationProvider).addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 		

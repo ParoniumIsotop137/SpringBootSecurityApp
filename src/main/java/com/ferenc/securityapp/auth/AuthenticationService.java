@@ -6,6 +6,8 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ import static org.springframework.security.core.userdetails.User.*;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
-	
+
 	@Autowired
 	private UserRepository repo;
 	@Autowired
@@ -30,9 +32,10 @@ public class AuthenticationService {
 	private AuthenticationManager aManager;
 
 	public AuthenticationResponse register(RegisterRequest request) {
-		
+
 		//rohadt lombok nem működik normálisan
-		var user = com.ferenc.securityapp.user.User.builder().firstName(request.getFirstName()).lastName(request.getLastName()).email(request.getEmail()).password(encoder.encode(request.getPassword())).role(Role.USER).build();
+		com.ferenc.securityapp.user.User user = new com.ferenc.securityapp.user.User(null, request.getFirstName(), request.getLastName(), request.getEmail(), encoder.encode(request.getPassword()), Role.USER);
+
 		repo.save(user);
 
 		var jwtToken = jwtService.GerenrateToken(user);
@@ -41,11 +44,14 @@ public class AuthenticationService {
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
 
+
 		aManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-		var user = repo.findByEmail(request.getEmail()).orElseThrow();
+		com.ferenc.securityapp.user.User user = repo.findByEmail(request.getEmail()).orElseThrow();
 		var jwtToken = jwtService.GerenrateToken(user);
-		return AuthenticationResponse.builder().token(jwtToken).build();
-	}
 
+		return AuthenticationResponse.builder().token(jwtToken).build();
+
+
+	}
 }

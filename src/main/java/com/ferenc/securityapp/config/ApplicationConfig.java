@@ -27,7 +27,7 @@ public class ApplicationConfig {
 	
 	@Bean
 	public UserDetailsService userDetailsService() {
-		return username -> repo.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("Nem található ilyen felhasználó!"));
+		return username -> repo.findByEmail(username).orElseThrow();
 			
 		}
 		
